@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "34265217719",
+    "firebase_url": "https://dejitarumeishiapp.firebaseio.com",
+    "project_id": "dejitarumeishiapp",
+    "storage_bucket": "dejitarumeishiapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34265217719:android:161b4265cd864ae8176b32",
+        "android_client_info": {
+          "package_name": "com.signmi.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34265217719-7q7lsriq2ph8giqva8fsmg1ql3s41u56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoBPeZCOZ8PWLYDSjynjuBZZ58Mv0nm5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34265217719-7q7lsriq2ph8giqva8fsmg1ql3s41u56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34265217719:android:8ff868dbd5d95867176b32",
+        "android_client_info": {
+          "package_name": "sssl4yer.dejitarumeishiapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34265217719-7q7lsriq2ph8giqva8fsmg1ql3s41u56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoBPeZCOZ8PWLYDSjynjuBZZ58Mv0nm5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34265217719-7q7lsriq2ph8giqva8fsmg1ql3s41u56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
