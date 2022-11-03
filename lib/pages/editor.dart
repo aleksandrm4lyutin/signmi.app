@@ -1,20 +1,13 @@
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dejitarumeishiapp/functions/data_service.dart';
-import 'package:dejitarumeishiapp/models/editor_arguments.dart';
-import 'package:dejitarumeishiapp/models/public_card.dart';
-import 'package:dejitarumeishiapp/pages/loadingpage.dart';
-import 'package:dejitarumeishiapp/shared/launch_prefs.dart';
-import 'package:dejitarumeishiapp/texts/text_editor.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:dejitarumeishiapp/functions/pick_image.dart';
-import 'package:dejitarumeishiapp/pages/data_holder.dart';
 import 'package:flutter/services.dart';
-
+import '../functions/data_services/delete_public_card.dart';
+import '../functions/data_services/update_public_card.dart';
+import '../functions/pick_image.dart';
 import '../models/public_card.dart';
 import '../models/route_arguments.dart';
+import '../shared/launch_prefs.dart';
 import '../texts/text_editor.dart';
 import 'data_holder.dart';
 import 'loading_page.dart';
@@ -29,10 +22,10 @@ class Editor extends StatefulWidget {
   final BuildContext cont;//context
 
   const Editor({Key? key,
-    this.uid,
-    this.card,
-    this.link,
-    this.cont
+    required this.uid,
+    required this.card,
+    required this.link,
+    required this.cont
   }) : super(key: key);
 
 
@@ -46,7 +39,6 @@ class Editor extends StatefulWidget {
 //*********************************************************************//
 class _EditorState extends State<Editor> {
 
-  //DataService dataService = DataService();//TODO: delete??
   late PublicCard _tempCard;
   late PublicCard _previewCard;
   bool _isUploading = false;
@@ -132,28 +124,6 @@ class _EditorState extends State<Editor> {
 
   final Map<String, String> prefixes = LaunchPrefs().prefs;
 
-  /*final Map<String, String> prefixes = {
-    'email': '',
-    'link': 'https://',
-    'phone': '',
-    'text': '',
-    'facebook': 'https://www.facebook.com/',
-    'instagram': 'https://www.instagram.com/',
-    'youtube': 'https://youtube.com/',
-    'vk': 'https://vk.com/',
-    'twitter': 'https://twitter.com/',
-    'whatsapp': 'https://www.whatsapp.com/',
-    'viber': 'https://www.viber.com/',
-    'telegram': 'https://telegram.org/',
-    'snapchat': 'https://www.snapchat.com/',
-    'reddit': 'https://www.redditinc.com/',
-    'pinterest': 'https://www.pinterest.com/',
-    'discord': 'https://discord.com/',
-    'steam': 'https://steamcommunity.com/id/',
-    'twitch': 'https://www.twitch.tv/',
-    'patreon': 'https://patreon.com/',
-    'kickstarter': 'https://kickstarter.com/',
-  };*/
 
   //################################################################
   //                         ASSEMBLE FOR PREVIEW
@@ -187,7 +157,7 @@ class _EditorState extends State<Editor> {
     _tempCard.origin = _origin;
 
     //Try to upload
-    var _r = await dataService.updatePublicCard(widget.uid, _cid, _tempCard, _imgPick, widget.link);
+    var _r = await updatePublicCard(widget.uid, _cid, _tempCard, _imgPick!, widget.link);
     //_isUploading = false;
     if(_r != null) {
       _uploadMessage = textEditor.strings[language]!['T00'] ?? 'Successfully uploaded!';//'Upload successful!'
@@ -197,7 +167,7 @@ class _EditorState extends State<Editor> {
       _uploadMessage = textEditor.strings[language]!['T01'] ?? 'Upload failed!';//'Upload failed!'
     }
     setState(() {
-      _cid = _r;
+      _cid = _r!;
       _isUploading = false;
     });
     showDialog(
@@ -210,7 +180,7 @@ class _EditorState extends State<Editor> {
             //
           ],
         ),
-        titlePadding: EdgeInsets.all(10.0),
+        titlePadding: const EdgeInsets.all(10.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
@@ -226,7 +196,7 @@ class _EditorState extends State<Editor> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               TextButton(
-                child: Text(textEditor.strings[language]['T02'] ?? 'Ok', style: TextStyle(fontSize: 20),),
+                child: Text(textEditor.strings[language]!['T02'] ?? 'Ok', style: const TextStyle(fontSize: 20),),
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(contextEditor);
@@ -245,7 +215,7 @@ class _EditorState extends State<Editor> {
   //################################################################
   void _deleteCard(BuildContext contextEditor) async {
     //Try to delete
-    var _d = await dataService.deletePublicCard(widget.uid, _cid, widget.card.imgUrl);
+    var _d = await deletePublicCard(widget.uid, _cid, widget.card.imgUrl);
     //_isUploading = false;
     if(_d) {
       _uploadMessage = textEditor.strings[language]!['T03'] ?? 'Successfully deleted!';//'Delete successful!'
@@ -457,7 +427,7 @@ class _EditorState extends State<Editor> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(textEditor.strings[language]['T07'] ?? 'Apply',
+                          Text(textEditor.strings[language]!['T07'] ?? 'Apply',
                             style: TextStyle(color: Colors.grey[300], fontSize: 15),
                           ),
                           const SizedBox(width: 5,),
@@ -883,7 +853,7 @@ class _EditorState extends State<Editor> {
                         icon: Icon(Icons.photo, size: (_w/2)/4 - 10,
                             color: Colors.grey[600]),
                         onPressed: () async {
-                          _imgPick = await PickImage(userSettings: DataHolder.of(widget.cont)?.userSettings).gallery();
+                          _imgPick = (await PickImage(userSettings: DataHolder.of(widget.cont)?.userSettings).gallery()) as File?;
                           if(_imgPick != null) {
                             setState(() {});
                           }
@@ -907,7 +877,7 @@ class _EditorState extends State<Editor> {
                         icon: Icon(Icons.photo_camera, size: (_w/2)/4 - 10,
                             color: Colors.grey[600]),
                         onPressed: () async {
-                          _imgPick = await PickImage(userSettings: DataHolder.of(widget.cont)?.userSettings).camera();
+                          _imgPick = (await PickImage(userSettings: DataHolder.of(widget.cont)?.userSettings).camera()) as File?;
                           if(_imgPick != null) {
                             setState(() {});
                           }
@@ -927,7 +897,7 @@ class _EditorState extends State<Editor> {
               padding: const EdgeInsets.all(5.0),
               child: InkWell(
                 child: ListTile(
-                  title: Text(_author ?? '',
+                  title: Text(_author,
                     style: const TextStyle(fontSize: 16),
                     overflow: TextOverflow.fade,
                   ),
@@ -1123,7 +1093,7 @@ class _EditorState extends State<Editor> {
                                 //hintText: 'Hint Text',
                                 //helperText: 'Helper Text',
 
-                                labelText: textEditor.strings[language]['T19'] ?? 'Title',//'Title'
+                                labelText: textEditor.strings[language]!['T19'] ?? 'Title',//'Title'
                                 labelStyle: const TextStyle(color: Colors.grey),
 
                                 border: const OutlineInputBorder(
