@@ -22,7 +22,7 @@ class Viewer extends StatefulWidget {
   final String language;
   final bool preview;
   final bool own;
-  final File preImg;
+  final File? preImg;
 
   const Viewer({Key? key,
     required this.card,
@@ -295,7 +295,7 @@ class _ViewerState extends State<Viewer> {
                   widget.card.imgUrl.isNotEmpty
                       ? Image.network(widget.card.imgUrl, fit: BoxFit.cover,)
                       : Image.asset('assets/placeholder_1440.jpg', fit: BoxFit.cover,)
-                      : Image.file(widget.preImg, fit: BoxFit.cover,),
+                  : Image.file(widget.preImg!, fit: BoxFit.cover,),
                 ],
               ),
             ),

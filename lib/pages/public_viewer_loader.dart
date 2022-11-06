@@ -56,7 +56,7 @@ class _ViewerLoaderState extends State<ViewerLoader> {
     super.initState();
 
     language = DataHolder.of(widget.cont)?.userSettings.language ?? 'english';
-    highlightColor = DataHolder.of(widget.cont)?.userSettings.color ?? Colors.deepOrangeAccent[900];
+    highlightColor = DataHolder.of(widget.cont)?.userSettings.color ?? Colors.deepOrangeAccent[700];
 
     widget.own == true ? _isPrivate = false : _isPrivate = widget.cardData?.private;
 
@@ -283,7 +283,7 @@ class _ViewerLoaderState extends State<ViewerLoader> {
                   language: language ?? 'english',
                   own: widget.own,
                   preview: false,
-                  preImg: File(''),//TODO
+                  preImg: null,//TODO
                 );
               }
             } else {
